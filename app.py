@@ -1,14 +1,14 @@
 from flask import Flask, Response , jsonify
 import pickle
-
+from flask_cors import CORS
 import cv2
 import mediapipe as mp
 import numpy as np
-
+import json
 app = Flask(__name__)
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
-
+CORS(app)
 cap = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -87,10 +87,22 @@ def gen_frames():
 
         # print(frame)
         # yield frame, predicted_character, predicted_accuracy    
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        # ret, buffer = cv2.imencode('.jpg', frame)
+        # frame = buffer.tobytes()
+        # yield (b'--frame\r\n'
+        #                 b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n' 
+        #                 b'Content-Type: text/plain\r\n\r\n' + str(predicted_character).encode() + b'\r\n'
+        #                 b'Content-Type: text/plain\r\n\r\n' + str(predicted_accuracy).encode() + b'\r\n')
+        # yield (b'--frame\r\n'
+        #     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+        data = {
+            'image': cv2.imencode('.jpg', frame)[1].tobytes().decode('latin-1'),
+            'predicted_character': predicted_character,
+            'predicted_accuracy': predicted_accuracy
+        }
+        event = 'data: ' + json.dumps(data) + '\n\n'
+        yield event
         
 
 
@@ -105,7 +117,7 @@ def video_feed():
     # return Response(generate(),
     #                 mimetype='multipart/x-mixed-replace; boundary=frame')
         return Response(gen_frames(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+                     mimetype='text/event-stream')
     
 
 if __name__ == "__main__":

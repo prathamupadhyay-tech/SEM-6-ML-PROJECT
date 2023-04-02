@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
+import App from "./components/AppTest";
 import reportWebVitals from "./reportWebVitals";
 import TestPage from "./components/TestPage";
 import VideoPlayer from "./components/VideoPlayer";

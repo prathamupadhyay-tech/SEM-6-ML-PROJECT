@@ -69,4 +69,10 @@
     border: 0.15em rgb(99, 59, 255) solid;
 }
 
-
+.test-word span.correct {
+    color: green;
+  }
+  
+.test-word span.incorrect {
+    color: red;
+  }
