@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "../css/TestPage.css";
 import { useState } from "react";
 import VideoPlayer from "./VideoPlayer";
-
+import io from 'socket.io-client'
 const TestPage = () => {
   const words = ["hello", "buy", "tanish", "kartik"];
   const [timer, settimer] = useState(30);
@@ -21,7 +21,25 @@ const TestPage = () => {
   useEffect(() => {
     document.addEventListener("keypress", detectKeyDown, true);
   }, [currentchar, nextWord]);
-
+  useEffect(() => {
+    const socket = io("ws://localhost:5000", {
+      transports: ["polling"],
+      cors: {
+        origin: "http://localhost:3000/",
+      },
+    });
+    
+    socket.on("connect" , () =>{
+      console.log("Connected")
+      socket.emit({"con" : "Connected"})
+      socket.on('connected', (data) => console.log("connected" , data))
+      socket.on('newdata', (data) => console.log("newdata" , data))
+    })
+    
+    return () => {
+      socket.disconnect();
+  };
+  }, [])
   const detectKeyDown = (e) => {
     // console.log();
 
@@ -41,7 +59,7 @@ const TestPage = () => {
         currentchar = 0;
         settimer(30);
         setScore((prevScore) => prevScore + 10);
-        if (nextWord == words.length - 1) {
+        if (nextWord === words.length - 1) {
           setnextWord(0);
         } else {
           setnextWord((prevWord) => prevWord + 1);
@@ -60,8 +78,8 @@ const TestPage = () => {
   useEffect(() => {
     var SetInterval = setInterval(() => {
       settimer((prevTimer) => prevTimer - 1);
-      if (timer == 0) {
-        if (nextWord == words.length - 1) {
+      if (timer === 0) {
+        if (nextWord === words.length - 1) {
           setnextWord(0);
         } else {
           settimerRunning(false);

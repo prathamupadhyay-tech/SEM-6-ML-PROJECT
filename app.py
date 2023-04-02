@@ -1,6 +1,6 @@
 from flask import Flask, Response , jsonify
 import pickle
-
+from flask_socketio import SocketIO, emit
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -8,7 +8,7 @@ import numpy as np
 app = Flask(__name__)
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
-
+socketio = SocketIO(app, cors_allowed_origins="*")
 cap = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -89,25 +89,25 @@ def gen_frames():
         # yield frame, predicted_character, predicted_accuracy    
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
+        socketio.emit("newdata" , {"accuracy" : predicted_accuracy , "character" : predicted_character} )
         yield (b'--frame\r\n'
             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         
+@socketio.on("connect")
+def frontend_connection():
+  print("Client is Connected")
+  return emit("connected" , {"connection" : 1})
 
 
+@socketio.on("con")
+def con():
+    return print("connected")
 @app.route('/video_feed')
 def video_feed():
-    # def generate():
-    #     for frame, _, _ in gen_frames():
-    #         frame_bytes = frame.astype('uint8').tobytes()
-    #         yield (b'--frame\r\n'
-    #                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-   
-    # return Response(generate(),
-    #                 mimetype='multipart/x-mixed-replace; boundary=frame')
         return Response(gen_frames(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+                mimetype='multipart/x-mixed-replace; boundary=frame')
+        
     
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app,debug = True, port=5000)
 
