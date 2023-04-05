@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "../css/TestPage.css";
 import { useState } from "react";
 import VideoPlayer from "./VideoPlayer";
-import App from "./AppTest";
 
 const TestPage = () => {
   const words = ["BUY", "CAR", "TRAIN", "BUS"];
