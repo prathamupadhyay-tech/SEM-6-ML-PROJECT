@@ -50,7 +50,7 @@ const TestPage = () => {
     console.log("word" + words[nextWord].charAt(currentChar));
     if (
       words[nextWord].charAt(currentChar) === predicted_char &&
-      Math.round(predicted_acc) * 100 > 70
+      Math.round(predicted_acc) * 100 > 40
     ) {
       setWord((prevWord) => prevWord + predicted_char);
       console.log("word" + word);
