@@ -76,3 +76,19 @@
 .test-word span.incorrect {
     color: red;
   }
+/* 
+
+convertion section */
+
+.converted-word{
+    font-size: 2em;
+    width: 80%;
+    display: flex;
+    
+    
+    flex-wrap: wrap;
+}
+.converted-word-div{
+    width: 100%;
+    
+}

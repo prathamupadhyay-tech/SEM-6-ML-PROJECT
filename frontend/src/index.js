@@ -5,6 +5,7 @@ import App from "./components/AppTest";
 import reportWebVitals from "./reportWebVitals";
 import TestPage from "./components/TestPage";
 import VideoPlayer from "./components/VideoPlayer";
+import SignToText from "./components/SignToText";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
