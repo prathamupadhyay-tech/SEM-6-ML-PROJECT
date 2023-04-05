@@ -28,8 +28,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     
-    gap: 15em;
     align-items: center;
     background-color: rgb(135, 135, 236);
     color: rgb(34, 34, 72);
@@ -76,19 +76,53 @@
 .test-word span.incorrect {
     color: red;
   }
+
+.sign-language-panel{
+    background-image: url("../utils/img/ASL.jpg");
+    background-size: contain;
+    width: 100%;
+    margin-bottom: 3em;
+    height: 30%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
 /* 
 
 convertion section */
 
 .converted-word{
+    
+}
+.converted-word-div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.converted-word-div p{
     font-size: 2em;
-    width: 80%;
+    padding: 0.5em;
+       
+}
+.converted-word{
+    width: 100%;
+
+    font-size: 2em;
+   
     display: flex;
     
     
     flex-wrap: wrap;
+
+    background-color: white;
 }
-.converted-word-div{
-    width: 100%;
-    
+.background-converted-word{
+    background-color: white;
+    width: 90%;
+    padding: 2em;
+    height: 500px;
+    border-radius: 1em;
 }

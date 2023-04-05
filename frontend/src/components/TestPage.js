@@ -211,6 +211,9 @@ const TestPage = () => {
                 ))}
               </h1>
             </div>
+            <div className="sign-language-panel">
+              
+            </div>
           </div>
 
           <div className="test-practise-part">

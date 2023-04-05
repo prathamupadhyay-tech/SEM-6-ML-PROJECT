@@ -58,16 +58,19 @@ const SignToText = () => {
     <>
       <div className="testpage-container">
         <div className="testpage-wrapper">
-          
           <div className="test-word-part">
             <div className="converted-word-div">
               <p>Converted text</p>
+              <div className="background-converted-word">
               <div className="converted-word">
                 {Array.from(word).map((char) => (
                   <span key={char}>{char}</span>
                 ))}
               </div>
+              </div>
+              
             </div>
+            <div className="sign-language-panel"></div>
           </div>
 
           <div className="test-practise-part">
